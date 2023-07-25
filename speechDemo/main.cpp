@@ -7,6 +7,8 @@
 using namespace std;
 
 int main() {
+    //添加随机种子
+    srand((unsigned int) time(NULL));
     SpeechManager sm;
     //用来存储用户的选项
     int choice = 0;
