@@ -1,6 +1,9 @@
 //
 // Created by 封心 on 2023/7/25.
 //
+#include <algorithm>
+#include <deque>
+#include <numeric>
 #include "speechManager.h"
 #include "string"
 
@@ -35,19 +38,115 @@ void SpeechManager::initSpeech() {
 
 void SpeechManager::createSpeaker() {
     string nameSeed = "ABCDEFGHIJKL";
-    for (int i = 0; i < nameSeed.size(); ++i) {
+    for (int i = 0; i < nameSeed.size(); i++) {
         string name = "选手";
         name += nameSeed[i];
+        //创建具体选手
         Speaker sp;
         sp.m_Name = name;
-        for (int j = 0; j < 2; ++j) {
-            sp.m_score[i] = 0;
+        for (int j = 0; j < 2; j++) {
+            sp.m_score[j] = 0;
         }
         //12名选手编号
         this->v1.push_back(i + 10001);
         //选手编号以及对应的选手 放入map容器中
         this->m_Speaker.insert(make_pair(i + 10001, sp));
     }
+}
+
+void SpeechManager::speechDraw() {
+    cout << "第<<" << this->m_index << ">>轮比赛选手正在抽签" << endl;
+    cout << "---------------------------------------" << endl;
+    cout << "抽签后演讲顺序如下： " << endl;
+    if (this->m_index == 1) {
+        random_shuffle(v1.begin(), v1.end());
+        for (auto it = v1.begin(); it != v1.end(); it++) {
+            cout << *it << " ";
+        }
+        cout << endl;
+    } else {
+        random_shuffle(v2.begin(), v2.end());
+        for (auto it = v2.begin(); it != v2.end(); it++) {
+            cout << *it << " ";
+        }
+        cout << endl;
+    }
+    cout << "---------------------------------------" << endl;
+    system("pause");
+    cout << endl;
+}
+
+void SpeechManager::speechContest() {
+    cout << "第<<" << this->m_index << ">>轮比赛正式开始： " << endl;
+    //临时容器保存key分数 value选手编号
+    multimap<double, int, greater<double>> groupScore;
+    //记录人员数，6为一组
+    int num = 0;
+    vector<int> v_Src;
+    if (this->m_index == 1) {
+        v_Src = v1;
+    } else {
+        v_Src = v2;
+    }
+    //遍历所有参赛选手
+    for (vector<int>::iterator it = v_Src.begin(); it != v_Src.end(); it++) {
+        num++;
+        //评委打分
+        deque<double> d;
+        for (int i = 0; i < 10; i++) {
+            double score = (rand() % 401 + 600) / 10.f;
+            cout << score << " ";
+            d.push_back(score);
+        }
+        //排序
+        sort(d.begin(), d.end(), greater<double>());
+        //去掉最高分
+        d.pop_front();
+        //去掉最低分
+        d.pop_back();
+        //获取总分
+        double sum = accumulate(d.begin(), d.end(), 0.0f);
+        //获取平均分
+        double avg = sum / (double) d.size();
+
+        cout << "编号: " << *it << " 选手: " << this->m_Speaker[*it].m_Name << " 获取平均分为: " << avg << endl;
+        this->m_Speaker[*it].m_score[this->m_index - 1] = avg;
+        groupScore.insert(make_pair(avg, *it));
+        if (num % 6 == 0) {
+            cout << "第" << num / 6 << "小组比赛名次: " << endl;
+            for (multimap<double, int, greater<double>>::iterator it = groupScore.begin();
+                 it != groupScore.end(); it++) {
+                cout << "编号: " << it->second << " 姓名: " << this->m_Speaker[it->second].m_Name << " 成绩: "
+                     << this->m_Speaker[it->second].m_score[this->m_index - 1] << endl;
+            }
+            int count = 0;
+            //去前三名
+            for (multimap<double, int, greater<double>>::iterator it = groupScore.begin();
+                 it != groupScore.end() && count < 3; it++, count++) {
+                if (this->m_index == 1) {
+                    v2.push_back((*it).second);
+                } else {
+                    vVictory.push_back((*it).second);
+                }
+            }
+            groupScore.clear();
+            cout << endl;
+        }
+    }
+}
+
+//开始比赛
+void SpeechManager::startSpeech() {
+    //第一轮比赛
+    //1、抽签
+    this->speechDraw();
+    //2、比赛
+    //3、显示晋级结果
+    //4、第二轮比赛
+    //1、抽签
+    //2、比赛
+    //3、显示比赛最终结果
+    //4、保存分数
 }
 
 void SpeechManager::show_menu() {

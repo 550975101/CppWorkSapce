@@ -36,6 +36,15 @@ public:
     //初始化创建12名选手
     void createSpeaker();
 
+    //开始比赛
+    void startSpeech();
+
+    //抽签
+    void speechDraw();
+
+    //比赛
+    void speechContest();
+
     //比赛选手 容器 12人
     vector<int> v1;
     //第一轮晋级容器 6人
