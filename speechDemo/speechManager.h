@@ -45,6 +45,21 @@ public:
     //比赛
     void speechContest();
 
+    //显示比赛结果
+    void showScore();
+
+    //保存记录
+    void saveRecord();
+
+    //读取记录
+    void loadRecord();
+
+    //文件为空的标志
+    bool fileIsEmpty;
+
+    //往届记录
+    map<int, vector<string>> m_Record;
+
     //比赛选手 容器 12人
     vector<int> v1;
     //第一轮晋级容器 6人

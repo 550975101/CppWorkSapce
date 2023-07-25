@@ -20,10 +20,11 @@ int main() {
         switch (choice) {
             //开始比赛
             case 1:
-                sm.speechDraw();
+                sm.startSpeech();
                 break;
-                //产看记录
+                //查看记录
             case 2:
+                sm.loadRecord();
                 break;
                 //清空记录
             case 3:
