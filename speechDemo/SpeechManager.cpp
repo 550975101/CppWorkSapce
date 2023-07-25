@@ -23,8 +23,8 @@ SpeechManager::~SpeechManager() {
 
 void SpeechManager::exitSystem() {
     cout << "欢迎下次使用" << endl;
-    system("pause");
     exit(0);
+    system("pause");
 }
 
 void SpeechManager::initSpeech() {
@@ -36,6 +36,8 @@ void SpeechManager::initSpeech() {
 
     //初始化比赛轮数
     this->m_index = 1;
+    //初始化容器记录
+    this->m_Record.clear();
 }
 
 void SpeechManager::createSpeaker() {
@@ -111,7 +113,7 @@ void SpeechManager::speechContest() {
         //获取平均分
         double avg = sum / (double) d.size();
 
-        cout << "编号: " << *it << " 选手: " << this->m_Speaker[*it].m_Name << " 获取平均分为: " << avg << endl;
+//        cout << "编号: " << *it << " 选手: " << this->m_Speaker[*it].m_Name << " 获取平均分为: " << avg << endl;
         this->m_Speaker[*it].m_score[this->m_index - 1] = avg;
         groupScore.insert(make_pair(avg, *it));
         if (num % 6 == 0) {
@@ -219,9 +221,20 @@ void SpeechManager::loadRecord() {
         index++;
     }
     ifs.close();
-    for (map<int, vector<string>>::iterator it = m_Record.begin(); it != m_Record.end(); it++) {
-        cout << it->first << "冠军编号" << it->second[0] << " 分数: " << it->second[1] << endl;
+//    for (map<int, vector<string>>::iterator it = m_Record.begin(); it != m_Record.end(); it++) {
+//        cout << it->first << "冠军编号" << it->second[0] << " 分数: " << it->second[1] << endl;
+//    }
+}
+
+void SpeechManager::showRecord() {
+    for (int i = 0; i < this->m_Record.size(); i++) {
+        cout << "第" << i + 1 << "届 "
+             << "冠军编号： " << this->m_Record[i][0] << "得分: " << this->m_Record[i][1] << " "
+             << "亚军编号： " << this->m_Record[i][2] << "得分: " << this->m_Record[i][3] << " "
+             << "季军编号： " << this->m_Record[i][4] << "得分: " << this->m_Record[i][5] << endl;
     }
+    system("pause");
+    system("cls");
 }
 
 //开始比赛
@@ -243,6 +256,16 @@ void SpeechManager::startSpeech() {
     this->showScore();
     //4、保存分数
     this->saveRecord();
+
+    //重置比赛
+    this->initSpeech();
+    //创建选手
+    this->createSpeaker();
+    //获取往届记录
+    this->loadRecord();
+    cout << "本届比赛完毕" << endl;
+    system("pause");
+    system("cls");
 }
 
 void SpeechManager::show_menu() {
@@ -251,7 +274,7 @@ void SpeechManager::show_menu() {
     cout << "*****************1.开始演讲比赛***********************" << endl;
     cout << "*****************2.查看往届记录***********************" << endl;
     cout << "*****************3.清除比赛记录***********************" << endl;
-    cout << "*****************4.退出比赛程序***********************" << endl;
+    cout << "*****************0.退出比赛程序***********************" << endl;
     cout << "****************************************************" << endl;
     cout << endl;
 }

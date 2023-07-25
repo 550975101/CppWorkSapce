@@ -60,6 +60,9 @@ public:
     //往届记录
     map<int, vector<string>> m_Record;
 
+    //显示往届分数
+    void showRecord();
+
     //比赛选手 容器 12人
     vector<int> v1;
     //第一轮晋级容器 6人

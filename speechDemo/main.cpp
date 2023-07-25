@@ -10,9 +10,6 @@ int main() {
     SpeechManager sm;
     //用来存储用户的选项
     int choice = 0;
-    for (auto &it: sm.m_Speaker) {
-        cout << "选手编号: " << it.first << " 姓名: " << it.second.m_Name << " 分数: " << it.second.m_score << endl;
-    }
     while (true) {
         sm.show_menu();
         cout << "请输入您的选择" << endl;
@@ -24,7 +21,7 @@ int main() {
                 break;
                 //查看记录
             case 2:
-                sm.loadRecord();
+                sm.showRecord();
                 break;
                 //清空记录
             case 3:
