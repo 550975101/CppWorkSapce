@@ -237,6 +237,31 @@ void SpeechManager::showRecord() {
     system("cls");
 }
 
+void SpeechManager::clearRecord() {
+    cout << "确认清空?" << endl;
+    cout << "1、确认" << endl;
+    cout << "2、返回" << endl;
+
+    int select = 0;
+    cin >> select;
+    if (select == 1) {
+        //打开模式
+        ofstream ofs("speech.csv", ios::trunc);
+        ofs.close();
+
+        //初始化属性
+        this->initSpeech();
+        //创建选手
+        this->createSpeaker();
+        //获取往届记录
+        this->loadRecord();
+
+        cout << "清空成功" << endl;
+    }
+    system("pause");
+    system("cls");
+}
+
 //开始比赛
 void SpeechManager::startSpeech() {
     //第一轮比赛

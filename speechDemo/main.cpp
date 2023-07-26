@@ -1,6 +1,7 @@
 //
 // Created by 封心 on 2023/7/25.
 //
+#include <ctime>
 #include "iostream"
 #include "speechManager.h"
 
@@ -27,6 +28,7 @@ int main() {
                 break;
                 //清空记录
             case 3:
+                sm.clearRecord();
                 break;
                 //退出系统
             case 0:
